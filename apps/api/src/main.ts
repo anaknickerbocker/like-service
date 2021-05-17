@@ -7,6 +7,10 @@ const CLIENT_BUILD_PATH = path.join(__dirname, '../like-service');
 const app = express();
 app.use(express.static(CLIENT_BUILD_PATH));
 
+app.get('*', (request, response) => {
+  response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+});
+
 app.get('/api', (req, res) => {
   res.send('Like Service API is Up');
 });
