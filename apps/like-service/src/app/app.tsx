@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@like-service-nx/api-interfaces';
+import React, { useState } from 'react';
+import { User } from '@like-service-nx/api-interfaces';
+import { LikesService } from './services/likes.service';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
 
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
+  const handleClick = async () => {
+    const user: User = await LikesService.likePhoto();
+    setLiked(!liked);
+  };
+
+  React.useEffect(() => {
+    LikesService.getLikes().then((numberOfLikes) => {
+      setLikes(numberOfLikes.likes);
+      setLiked(numberOfLikes.liked);
+    });
+  }, [liked]);
 
   return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to like-service!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-          alt="Nx - Powerful, Extensible Dev Tools"
-        />
-      </div>
-      <div>{m.message}</div>
-    </>
+    <div style={{ textAlign: 'center' }}>
+      <button>
+        <span role="img" aria-label="Like this photo" onClick={handleClick}>
+          ❤️
+        </span>
+      </button>
+      <br />
+      Likes: {likes}
+    </div>
   );
 };
 

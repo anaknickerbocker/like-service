@@ -12,9 +12,17 @@
   "npmScope": "like-service-nx",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "MzI1YzJlMTQtZTU5NC00M2U0LTg2MjgtZjM4OGIyYmQ3MmFmfHJlYWQtd3JpdGU=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
       }
     }
   },
@@ -24,7 +32,9 @@
     },
     "like-service-e2e": {
       "tags": [],
-      "implicitDependencies": ["like-service"]
+      "implicitDependencies": [
+        "like-service"
+      ]
     },
     "api": {
       "tags": []
