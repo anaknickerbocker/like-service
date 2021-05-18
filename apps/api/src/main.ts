@@ -1,38 +1,28 @@
-import * as express from 'express';
+import express from 'express';
+import mongoose from 'mongoose';
 import * as path from 'path';
-// import { User, Photo } from '@like-service-nx/api-interfaces';
+import dotenv from 'dotenv';
+import router from './routes/router';
+
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const CLIENT_BUILD_PATH = path.join(__dirname, '../like-service');
-
 const app = express();
 app.use(express.static(CLIENT_BUILD_PATH));
 
+const uri = process.env.MONGO_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on(
+  'error',
+  console.error.bind(console, 'MongoDB connection error:')
+);
+
+app.use('/api', router);
+
 app.get('*', (request, response) => {
-  response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
-});
-
-app.get('/api', (req, res) => {
-  res.send('Like Service API is Up');
-});
-
-app.get('/api/v1/users/:userId/photos/:photoId/likes', (req, res) => {
-  // retrieve data from database
-  res.json({
-    likes: 22,
-    liked: false,
-  });
-});
-
-app.post('/api/v1/users/:userId/photos/:photoId/like', (req, res) => {
-  // increment likes
-  // update database
-  res.json({
-    userId: req.params.userId,
-    photos: {
-      photoId: req.params.photoId,
-      likes: 22,
-    },
-  });
+  response.sendFile(path.join(CLIENT_BUILD_PATH, '/index.html'));
 });
 
 const port = process.env.PORT || 3333;

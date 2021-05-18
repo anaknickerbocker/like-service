@@ -1,15 +1,31 @@
 import axios from 'axios';
-import { User } from '@like-service-nx/api-interfaces';
+import { UserDoc } from '@like-service-nx/api-interfaces';
 
 export class LikesService {
-  static getLikes(): Promise<{ likes: number; liked: boolean }> {
-    return axios.get('api/v1/users/1/photos/2/likes');
+  static getLikes(
+    userId: string,
+    photoId: string
+  ): Promise<{
+    data: { _id: string; userId: string; likes: number; liked: boolean };
+  }> {
+    return axios.get(`api/v1/users/${userId}/photos/${photoId}/likes`);
   }
 
-  static likePhoto(): Promise<User> {
-    return axios.post('api/v1/users/1/photos/2/like', {
-      userId: 1,
-      photos: [{ photoId: 2, likes: 3 }],
-    });
+  static likePhoto(
+    userId: string,
+    photoId: string
+  ): Promise<{
+    data: { _id: string; userId: string; likes: number; liked: boolean };
+  }> {
+    return axios.put(`api/v1/users/${userId}/photos/${photoId}/like`);
+  }
+
+  static dislikePhoto(
+    userId: string,
+    photoId: string
+  ): Promise<{
+    data: { _id: string; userId: string; likes: number; liked: boolean };
+  }> {
+    return axios.put(`api/v1/users/${userId}/photos/${photoId}/dislike`);
   }
 }
