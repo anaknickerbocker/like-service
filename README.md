@@ -14,6 +14,47 @@ if you change any of the source files.
 Run `nx build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag
 for a production build.
 
+## API Usage
+
+GET `api/v1/users/${userId}/photos/${photoId}/likes`
+
+Returns the found photo:
+
+```json
+{
+  "id": "photoId",
+  "userId": "userId",
+  "likes": 0,
+  "liked": false
+}
+```
+
+PUT `api/v1/users/${userId}/photos/${photoId}/like`
+
+Returns the updated photo:
+
+```json
+{
+  "id": "photoId",
+  "userId": "userId",
+  "likes": 1,
+  "liked": true
+}
+```
+
+PUT `api/v1/users/${userId}/photos/${photoId}/like`
+
+Returns the updated photo:
+
+```json
+{
+  "id": "photoId",
+  "userId": "userId",
+  "likes": 0,
+  "liked": false
+}
+```
+
 ## Running unit tests
 
 Run `nx test like-service` to execute the unit tests via [Jest](https://jestjs.io).

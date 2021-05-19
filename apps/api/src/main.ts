@@ -1,5 +1,5 @@
-import express from 'express';
-import mongoose from 'mongoose';
+import express, { Request, Response, NextFunction } from 'express';
+import mongoose, { Error } from 'mongoose';
 import * as path from 'path';
 import dotenv from 'dotenv';
 import router from './routes/router';
@@ -21,8 +21,21 @@ mongoose.connection.on(
 
 app.use('/api', router);
 
-app.get('*', (request, response) => {
-  response.sendFile(path.join(CLIENT_BUILD_PATH, '/index.html'));
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(CLIENT_BUILD_PATH, '/index.html'));
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something failed!' });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err: Error, req: Request, res: Response) => {
+  res.status(500);
+  res.json({ error: err });
 });
 
 const port = process.env.PORT || 3333;
