@@ -9,6 +9,8 @@
 Run `npx nx serve like-service` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload
 if you change any of the source files.
 
+Run `yarn start api` to start the API.
+
 ## Build
 
 Run `nx build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag
